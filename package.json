@@ -1,6 +1,6 @@
 {
   "name": "roam-depot-bluesky-comments",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Roam Research Plugin Example",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
+    "@atproto/api": "^0.13.26",
     "roamjs-components": "^0.84.1"
   }
 }
