@@ -53,7 +53,7 @@ const QuotedPost = ({ record }) => {
   );
 };
 
-const ReplyBox = ({ agent, postUri, onReplyPosted, authorHandle }) => {
+const ReplyBox = ({ agent, postUri, onReplyPosted, authorHandle, postCid }) => {
   const [replyText, setReplyText] = useState('');
   const [isPosting, setIsPosting] = useState(false);
   const [error, setError] = useState('');
@@ -69,10 +69,17 @@ const ReplyBox = ({ agent, postUri, onReplyPosted, authorHandle }) => {
       const post = {
         text: replyText,
         reply: {
-          root: postUri,
-          parent: postUri
+          root: {
+            uri: postUri,
+            cid: postCid
+          },
+          parent: {
+            uri: postUri,
+            cid: postCid
+          }
         }
       };
+
 
       await agent.post(post);
       setReplyText('');
@@ -312,6 +319,7 @@ const BlueskyPost = ({ url, extensionAPI }) => {
         <ReplyBox
           agent={agent}
           postUri={thread.post.uri}
+          postCid={thread.post.cid}
           onReplyPosted={() => fetchThread()}
           authorHandle={thread.post.author.handle}
         />
@@ -404,9 +412,30 @@ const BlueskyPost = ({ url, extensionAPI }) => {
               <ReplyBox
                 agent={agent}
                 postUri={reply.post.uri}
+                postCid={reply.post.cid}
                 onReplyPosted={() => fetchThread()}
                 authorHandle={reply.post.author.handle}
               />
+            )}
+            {/* Nested replies handling */}
+            {reply.replies?.length > 0 && expandedReplies.has(reply.post.uri) && (
+              <div className="ml-4 pl-4 border-l">
+                {reply.replies.map(nestedReply => (
+                  <div key={nestedReply.post.uri}>
+                    {/* Existing nested reply rendering */}
+
+                    {isAuthenticated && agent && (
+                      <ReplyBox
+                        agent={agent}
+                        postUri={nestedReply.post.uri}
+                        postCid={nestedReply.post.cid}
+                        onReplyPosted={() => fetchThread()}
+                        authorHandle={nestedReply.post.author.handle}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
             )}
           </div>
         ))}
