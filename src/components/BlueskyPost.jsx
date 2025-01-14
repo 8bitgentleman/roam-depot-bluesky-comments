@@ -107,7 +107,8 @@ const ReplyBox = ({ agent, postUri, onReplyPosted, authorHandle }) => {
   return (
     <div className="mt-2">
       <TextArea
-        className="w-full min-h-12 mb-2 text-sm"
+        className="w-full min-h-12 mb-2 text-sm pointer-events-auto"
+        style={{ pointerEvents: 'auto' }}
         placeholder={`Reply to @${authorHandle}...`}
         value={replyText}
         onChange={e => setReplyText(e.target.value)}
@@ -261,7 +262,7 @@ const BlueskyPost = ({ url, extensionAPI }) => {
   if (!thread) return null;
 
   return (
-    <div className="rounded-md border border-gray-200 p-4 relative">
+    <div className="bluesky-thread rounded-md border border-gray-200 p-4 relative">
       {/* Notifications */}
       {notifications.length > 0 && (
         <div className="absolute top-2 right-2">
@@ -318,7 +319,7 @@ const BlueskyPost = ({ url, extensionAPI }) => {
       )}
 
       {/* Replies Section */}
-      <div className="mt-4 border-t pt-4">
+      <div className="border-t">
         <div className="text-sm text-gray-500 mb-3">
           {thread.replies?.length || 0} replies
           {!isAuthenticated && (
