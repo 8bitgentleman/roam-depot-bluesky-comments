@@ -107,8 +107,7 @@ const ReplyBox = ({ agent, postUri, onReplyPosted, authorHandle }) => {
   return (
     <div className="mt-2">
       <TextArea
-        className="w-full min-h-12 mb-2 text-sm pointer-events-auto"
-        style={{ pointerEvents: 'auto' }}
+        className="w-full min-h-12 mb-2 text-sm"
         placeholder={`Reply to @${authorHandle}...`}
         value={replyText}
         onChange={e => setReplyText(e.target.value)}

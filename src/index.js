@@ -4,6 +4,8 @@ import createButtonObserver from "roamjs-components/dom/createButtonObserver";
 import getUidsFromButton from "roamjs-components/dom/getUidsFromButton";
 import BlueskyLoginPanel from './components/BlueskyLoginPanel';
 import BlueskyPost from './components/BlueskyPost'; 
+import { createComponentRender } from "roamjs-components/components/ComponentContainer";
+import getBlockUidFromTarget from 'roamjs-components/dom/getBlockUidFromTarget';
 
 // Store observers globally for cleanup
 var runners = {
@@ -21,6 +23,9 @@ const getBlockContent = (uid) => {
 };
 
 const renderBlueskyPost = (button, extensionAPI) => {
+  // Stop event propagation
+  button.parentElement.onmousedown = (e) => e.stopPropagation();
+
   const { blockUid } = getUidsFromButton(button);
   const blockContent = getBlockContent(blockUid);
   const url = blockContent.match(/{{bluesky:(.*?)}}/)?.[1];
